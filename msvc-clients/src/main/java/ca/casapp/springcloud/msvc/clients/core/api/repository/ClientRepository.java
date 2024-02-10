@@ -15,7 +15,7 @@ import java.util.Optional;
  */
 public interface ClientRepository {
 
-    ClientDomain save(ClientDomain domain);
+    ClientDomain save(ClientDomain.CreateRequest domain);
 
     Optional<ClientDomain> findById(Long id);
 
