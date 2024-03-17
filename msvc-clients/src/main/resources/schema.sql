@@ -7,4 +7,4 @@ CREATE TABLE client(
     date_of_birth DATE
 );
 
-INSERT INTO client( email, phone, first_name, last_name, date_of_birth ) VALUES ( 'dwinpaez@gmail.com', '4505028511', 'Dwin', 'Paez', '1985-11-02' )
+ INSERT INTO client( email, phone, first_name, last_name, date_of_birth ) VALUES ( 'dwinpaez@gmail.com', '4505028511', 'Dwin', 'Paez', '1985-11-02' )

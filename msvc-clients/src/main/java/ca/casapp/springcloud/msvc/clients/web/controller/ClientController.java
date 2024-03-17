@@ -3,11 +3,9 @@ package ca.casapp.springcloud.msvc.clients.web.controller;
 import ca.casapp.springcloud.msvc.clients.core.api.ClientService;
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -43,6 +41,13 @@ public class ClientController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(optional.get());
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<ClientDomain> createClient(@RequestBody ClientDomain.CreateRequest createRequest) {
+        log.debug("method: createClient({})", createRequest);
+        final var client = clientService.createClient(createRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 
 }
