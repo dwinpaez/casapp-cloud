@@ -1,8 +1,7 @@
 package ca.casapp.springcloud.msvc.clients.core.aplication.repository;
 
-import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
 import ca.casapp.springcloud.msvc.clients.core.api.repository.ClientRepository;
-import ca.casapp.springcloud.msvc.clients.core.aplication.repository.mapper.ClientMapper;
+import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.entity.ClientEntity;
 import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.repository.ClientEntityRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,23 +18,27 @@ import java.util.Optional;
 public class ClientRepositoryHandler implements ClientRepository {
 
     private final ClientEntityRepository repository;
-    private final ClientMapper mapper;
 
-    public ClientRepositoryHandler(ClientEntityRepository repository, ClientMapper mapper) {
+    public ClientRepositoryHandler(ClientEntityRepository repository) {
         this.repository = repository;
-        this.mapper = mapper;
     }
 
-    public ClientDomain save(ClientDomain.CreateRequest domain) {
-        return mapper.toDomain(repository.saveAndFlush(mapper.toEntity(domain)));
+    public ClientEntity save(ClientEntity entity) {
+        return repository.saveAndFlush(entity);
     }
 
-    public Optional<ClientDomain> findById(Long id) {
-        return repository.findById(id).map(entity -> mapper.toDomain(entity));
+    @Override
+    public ClientEntity updateNames(Long id, String firstName, String lastName) {
+        repository.updateClientName(id, firstName, lastName);
+        return repository.findById(id).orElseThrow();
     }
 
-    public List<ClientDomain> findAll(Map<String, String> params) {
-        return mapper.toDomain(repository.findAll());
+    public Optional<ClientEntity> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    public List<ClientEntity> findAll(Map<String, String> params) {
+        return repository.findAll();
     }
 
     public void deleteById(Long id) {

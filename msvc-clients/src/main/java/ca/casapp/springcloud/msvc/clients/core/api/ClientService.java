@@ -2,6 +2,7 @@ package ca.casapp.springcloud.msvc.clients.core.api;
 
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -11,11 +12,13 @@ import java.util.Optional;
  */
 public interface ClientService {
 
-    Optional<ClientDomain> findClientById(Integer id);
+    List<ClientDomain> findAllClients();
+
+    Optional<ClientDomain> findClientById(Long id);
 
     ClientDomain createClient(ClientDomain.CreateRequest createRequest);
 
-    ClientDomain updateClient(ClientDomain.UpdateRequest updateRequest);
+    ClientDomain updateClientName(ClientDomain.UpdateRequestName updateRequest);
 
     void deleteClient(ClientDomain.DeleteRequest deleteRequest);
 }

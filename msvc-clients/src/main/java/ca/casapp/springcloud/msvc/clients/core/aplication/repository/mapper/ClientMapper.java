@@ -29,6 +29,7 @@ public class ClientMapper {
                 .firstName(entity.getFirstName())
                 .lastName(entity.getLastName())
                 .dateOfBirth(entity.getDateOfBirth())
+                .email(entity.getEmail())
                 .build();
     }
 
@@ -36,6 +37,23 @@ public class ClientMapper {
         if (Objects.isNull(entities))
             return Collections.emptyList();
         return entities.stream().map(entity -> toDomain(entity)).collect(Collectors.toList());
+    }
+    public ClientDomain toDomain(ClientDomain.CreateRequest createRequest) {
+        if (Objects.isNull(createRequest))
+            return null;
+        return ClientDomain.builder()
+                .email(createRequest.getEmail())
+                .firstName(createRequest.getFirstName())
+                .lastName(createRequest.getLastName())
+                .build();
+    }
+
+    public ClientEntity toEntity(final ClientDomain createRequest) {
+        ClientEntity entity = new ClientEntity();
+        entity.setEmail(createRequest.email());
+        entity.setFirstName(createRequest.firstName());
+        entity.setLastName(createRequest.lastName());
+        return entity;
     }
 
     public ClientEntity toEntity(final ClientDomain.CreateRequest createRequest) {

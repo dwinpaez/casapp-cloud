@@ -41,7 +41,7 @@ public record ClientDomain(
 
     @Data
     @Builder
-    public static class UpdateRequest implements Serializable {
+    public static class UpdateRequestName implements Serializable {
 
         private Long id;
         private String firstName;

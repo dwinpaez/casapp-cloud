@@ -1,6 +1,7 @@
 package ca.casapp.springcloud.msvc.clients.core.api.repository;
 
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
+import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.entity.ClientEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -15,11 +16,13 @@ import java.util.Optional;
  */
 public interface ClientRepository {
 
-    ClientDomain save(ClientDomain.CreateRequest domain);
+    ClientEntity save(ClientEntity entity);
 
-    Optional<ClientDomain> findById(Long id);
+    ClientEntity updateNames(Long id, String firstName, String lastName);
 
-    List<ClientDomain> findAll(Map<String, String> params);
+    Optional<ClientEntity> findById(Long id);
+
+    List<ClientEntity> findAll(Map<String, String> params);
 
     void deleteById(Long id);
 }
