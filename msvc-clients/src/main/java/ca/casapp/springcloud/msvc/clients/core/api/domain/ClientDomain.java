@@ -1,6 +1,9 @@
 package ca.casapp.springcloud.msvc.clients.core.api.domain;
 
 import com.google.gson.Gson;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -29,7 +32,10 @@ public record ClientDomain(
     @Builder
     public static class CreateRequest implements Serializable {
 
+        @NotEmpty
+        @Email
         private String email;
+        @NotEmpty
         private String firstName;
         private String lastName;
 
@@ -43,21 +49,11 @@ public record ClientDomain(
     @Builder
     public static class UpdateRequestName implements Serializable {
 
+        @NotNull
         private Long id;
+        @NotEmpty
         private String firstName;
         private String lastName;
-
-        @Override
-        public String toString() {
-            return new Gson().toJson(this);
-        }
-    }
-
-    @Data
-    @Builder
-    public static class DeleteRequest implements Serializable {
-
-        private Long id;
 
         @Override
         public String toString() {

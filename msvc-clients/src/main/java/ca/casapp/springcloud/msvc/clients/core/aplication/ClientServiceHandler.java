@@ -56,6 +56,9 @@ public class ClientServiceHandler implements ClientService {
     public ClientDomain createClient(ClientDomain.CreateRequest createRequest) {
         log.debug("method: createClient({})", createRequest);
         try {
+            if (repository.findByEmail(createRequest.getEmail()).isPresent()) {
+
+            }
             return mapper.toDomain(repository.save(mapper.toEntity(createRequest)));
         } catch (Exception ex) {
             log.error("method: createClient({}) -> Exception: {}", createRequest, ex);
@@ -75,12 +78,12 @@ public class ClientServiceHandler implements ClientService {
     }
 
     @Override
-    public void deleteClient(ClientDomain.DeleteRequest deleteRequest) {
-        log.debug("method: deleteClient({})", deleteRequest);
+    public void deleteClient(Long id) {
+        log.debug("method: deleteClient({})", id);
         try {
-            repository.deleteById(deleteRequest.getId());
+            repository.deleteById(id);
         } catch (Exception ex) {
-            log.error("method: deleteClient({}) -> Exception: {}", deleteRequest, ex);
+            log.error("method: deleteClient({}) -> Exception: {}", id, ex);
             throw ex;
         }
     }

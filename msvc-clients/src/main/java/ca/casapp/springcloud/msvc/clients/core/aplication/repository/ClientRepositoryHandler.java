@@ -37,9 +37,15 @@ public class ClientRepositoryHandler implements ClientRepository {
         return repository.findById(id);
     }
 
+    @Override
+    public Optional<ClientEntity> findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
     public List<ClientEntity> findAll(Map<String, String> params) {
         return repository.findAll();
     }
+
 
     public void deleteById(Long id) {
         repository.deleteById(id);

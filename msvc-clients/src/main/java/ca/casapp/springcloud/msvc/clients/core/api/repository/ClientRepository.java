@@ -22,6 +22,8 @@ public interface ClientRepository {
 
     Optional<ClientEntity> findById(Long id);
 
+    Optional<ClientEntity> findByEmail(String email);
+
     List<ClientEntity> findAll(Map<String, String> params);
 
     void deleteById(Long id);

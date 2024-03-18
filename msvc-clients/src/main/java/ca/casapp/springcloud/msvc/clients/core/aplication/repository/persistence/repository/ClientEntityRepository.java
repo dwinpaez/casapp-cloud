@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * JPA repositories for {@link ClientEntity}.
  *
@@ -22,4 +24,6 @@ public interface ClientEntityRepository extends JpaRepository<ClientEntity, Long
     void updateClientName(@Param(value = "id") long id,
                           @Param(value = "firstName") String firstName,
                           @Param(value = "lastName") String lastName);
+
+    Optional<ClientEntity> findByEmail(String email);
 }

@@ -2,6 +2,7 @@ package ca.casapp.springcloud.msvc.clients.web.controller;
 
 import ca.casapp.springcloud.msvc.clients.core.api.ClientService;
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,10 +45,20 @@ public class ClientController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ClientDomain> createClient(@RequestBody ClientDomain.CreateRequest createRequest) {
+    public ResponseEntity<ClientDomain> createClient(@Valid @RequestBody ClientDomain.CreateRequest createRequest) {
         log.debug("method: createClient({})", createRequest);
         final var client = clientService.createClient(createRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 
+    @DeleteMapping("/{clientId}")
+    public ResponseEntity<ClientDomain> deleteClientById(@PathVariable("clientId") Long clientId) {
+        log.debug("method: deleteClientById({})", clientId);
+        final var optional = clientService.findClientById(clientId);
+        if (optional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        clientService.deleteClient(optional.get().id());
+        return ResponseEntity.noContent().build();
+    }
 }

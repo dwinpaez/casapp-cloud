@@ -20,5 +20,5 @@ public interface ClientService {
 
     ClientDomain updateClientName(ClientDomain.UpdateRequestName updateRequest);
 
-    void deleteClient(ClientDomain.DeleteRequest deleteRequest);
+    void deleteClient(Long id);
 }
