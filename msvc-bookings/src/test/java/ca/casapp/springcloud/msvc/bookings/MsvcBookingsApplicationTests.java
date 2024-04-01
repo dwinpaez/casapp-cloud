@@ -1,4 +1,4 @@
-package ca.casapp.springcloud.msvc.bookings.msvcbookings;
+package ca.casapp.springcloud.msvc.bookings;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,8 @@
-package ca.casapp.springcloud.msvc.clients.core.aplication.repository;
+package ca.casapp.springcloud.msvc.clients.core.aplication.persistence;
 
 import ca.casapp.springcloud.msvc.clients.core.api.repository.ClientRepository;
-import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.entity.ClientEntity;
-import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.repository.ClientEntityRepository;
+import ca.casapp.springcloud.msvc.clients.core.aplication.persistence.entity.ClientEntity;
+import ca.casapp.springcloud.msvc.clients.core.aplication.persistence.repository.ClientEntityRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.entity;
+package ca.casapp.springcloud.msvc.clients.core.aplication.persistence.entity;
 
 
 import com.google.gson.Gson;

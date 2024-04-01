@@ -1,8 +1,8 @@
-package ca.casapp.springcloud.msvc.clients.core.aplication.repository.mapper;
+package ca.casapp.springcloud.msvc.clients.core.aplication.mapper;
 
 
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
-import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.entity.ClientEntity;
+import ca.casapp.springcloud.msvc.clients.core.aplication.persistence.entity.ClientEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -37,23 +37,6 @@ public class ClientMapper {
         if (Objects.isNull(entities))
             return Collections.emptyList();
         return entities.stream().map(entity -> toDomain(entity)).collect(Collectors.toList());
-    }
-    public ClientDomain toDomain(ClientDomain.CreateRequest createRequest) {
-        if (Objects.isNull(createRequest))
-            return null;
-        return ClientDomain.builder()
-                .email(createRequest.getEmail())
-                .firstName(createRequest.getFirstName())
-                .lastName(createRequest.getLastName())
-                .build();
-    }
-
-    public ClientEntity toEntity(final ClientDomain createRequest) {
-        ClientEntity entity = new ClientEntity();
-        entity.setEmail(createRequest.email());
-        entity.setFirstName(createRequest.firstName());
-        entity.setLastName(createRequest.lastName());
-        return entity;
     }
 
     public ClientEntity toEntity(final ClientDomain.CreateRequest createRequest) {

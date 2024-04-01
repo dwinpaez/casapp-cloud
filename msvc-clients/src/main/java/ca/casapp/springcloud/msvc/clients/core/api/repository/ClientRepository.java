@@ -1,17 +1,17 @@
 package ca.casapp.springcloud.msvc.clients.core.api.repository;
 
-import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
-import ca.casapp.springcloud.msvc.clients.core.aplication.repository.persistence.entity.ClientEntity;
+
+import ca.casapp.springcloud.msvc.clients.core.aplication.persistence.entity.ClientEntity;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 /**
- * Repository for {@link ClientDomain}.
+ * Repository for {@link ClientEntity}.
  *
- * @author <a href="mailto:dpoveda@gmail.com">Diego Poveda</a>
- * @version 3.0-SNAPSHOT 2021/04/01
+ * @author <a href="mailto:dwinpaez@gmail.com">Dwin Paez</a>
+ * @version 3.0-SNAPSHOT 2024/04/01
  * @since 1.8
  */
 public interface ClientRepository {

@@ -1,5 +1,6 @@
 package ca.casapp.springcloud.msvc.clients.web.error;
 
+import ca.casapp.springcloud.msvc.clients.web.exception.ClientEmailExistAlreadyException;
 import ca.casapp.springcloud.msvc.clients.web.exception.MyResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
@@ -86,10 +87,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     // 409
 
-    @ExceptionHandler({InvalidDataAccessApiUsageException.class, DataAccessException.class})
+    @ExceptionHandler({InvalidDataAccessApiUsageException.class, DataAccessException.class, ClientEmailExistAlreadyException.class})
     protected ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
         ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.CONFLICT.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));
@@ -104,7 +105,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     /*500*/ public ResponseEntity<Object> handleInternal(final RuntimeException ex, final WebRequest request) {
         logger.error("500 Status Code", ex);
         ErrorMessage message = new ErrorMessage(
-                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
                 request.getDescription(false));

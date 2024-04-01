@@ -3,7 +3,8 @@ package ca.casapp.springcloud.msvc.clients.core.aplication;
 import ca.casapp.springcloud.msvc.clients.core.api.ClientService;
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
 import ca.casapp.springcloud.msvc.clients.core.api.repository.ClientRepository;
-import ca.casapp.springcloud.msvc.clients.core.aplication.repository.mapper.ClientMapper;
+import ca.casapp.springcloud.msvc.clients.core.aplication.mapper.ClientMapper;
+import ca.casapp.springcloud.msvc.clients.web.exception.ClientEmailExistAlreadyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,7 @@ public class ClientServiceHandler implements ClientService {
         log.debug("method: createClient({})", createRequest);
         try {
             if (repository.findByEmail(createRequest.getEmail()).isPresent()) {
-
+                throw new ClientEmailExistAlreadyException("Client email already exist: " + createRequest.getEmail());
             }
             return mapper.toDomain(repository.save(mapper.toEntity(createRequest)));
         } catch (Exception ex) {
