@@ -22,5 +22,7 @@ public interface BookingRepository {
 
     List<BookingEntity> findAll(Map<String, String> params);
 
+    List<BookingEntity> findByClient(Long clientId);
+
     void deleteById(Long id);
 }

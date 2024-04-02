@@ -23,6 +23,7 @@ public class ClientRepositoryHandler implements ClientRepository {
         this.repository = repository;
     }
 
+    @Override
     public ClientEntity save(ClientEntity entity) {
         return repository.saveAndFlush(entity);
     }
@@ -33,6 +34,7 @@ public class ClientRepositoryHandler implements ClientRepository {
         return repository.findById(id).orElseThrow();
     }
 
+    @Override
     public Optional<ClientEntity> findById(Long id) {
         return repository.findById(id);
     }
@@ -42,6 +44,7 @@ public class ClientRepositoryHandler implements ClientRepository {
         return repository.findByEmail(email);
     }
 
+    @Override
     public List<ClientEntity> findAll(Map<String, String> params) {
         return repository.findAll();
     }

@@ -14,9 +14,11 @@ public interface BookingService {
 
     List<BookingDomain> findAllBookings();
 
-    Optional<BookingDomain> findClientById(Long id);
+    List<BookingDomain> findBookingsByClient(Long clientId);
+
+    Optional<BookingDomain> findBookingById(Long id);
 
     BookingDomain createBooking(BookingDomain.CreateRequest createRequest);
 
-    void deleteBooking(Long id);
+    void deleteBookingById(Long id);
 }

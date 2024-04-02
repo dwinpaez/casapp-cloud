@@ -4,6 +4,8 @@ import ca.casapp.springcloud.msvc.bookings.core.application.persistence.entity.B
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * JPA repositories for {@link BookingEntity}.
  *
@@ -12,4 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BookingEntityRepository extends JpaRepository<BookingEntity, Long> {
 
+    List<BookingEntity> findByClientId(Long clientId);
 }

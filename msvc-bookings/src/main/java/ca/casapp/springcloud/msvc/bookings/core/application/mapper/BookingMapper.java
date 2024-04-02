@@ -31,6 +31,7 @@ public class BookingMapper {
                 .total(entity.getTotal())
                 .startDate(entity.getStartDate())
                 .endDate(entity.getEndDate())
+                .creationDate(entity.getCreationDate())
                 .build();
     }
 
