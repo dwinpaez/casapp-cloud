@@ -1,9 +1,14 @@
 package ca.casapp.springcloud.msvc.clients.core.aplication;
 
 import ca.casapp.springcloud.msvc.clients.core.api.ClientService;
+import ca.casapp.springcloud.msvc.clients.core.api.domain.BookingDomain;
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
+import ca.casapp.springcloud.msvc.clients.core.api.rest.BookingRest;
 import ca.casapp.springcloud.msvc.clients.core.api.repository.ClientRepository;
+import ca.casapp.springcloud.msvc.clients.core.aplication.mapper.BookingMapper;
 import ca.casapp.springcloud.msvc.clients.core.aplication.mapper.ClientMapper;
+import ca.casapp.springcloud.msvc.clients.core.aplication.persistence.entity.ClientEntity;
+import ca.casapp.springcloud.msvc.clients.core.aplication.rest.model.BookingModel;
 import ca.casapp.springcloud.msvc.clients.web.exception.ClientEmailExistAlreadyException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,10 +30,12 @@ public class ClientServiceHandler implements ClientService {
 
     private final ClientRepository repository;
     private final ClientMapper mapper;
+    private final BookingRest bookingRest;
 
-    public ClientServiceHandler(ClientRepository repository, ClientMapper mapper) {
+    public ClientServiceHandler(ClientRepository repository, ClientMapper mapper, BookingRest bookingRest) {
         this.repository = repository;
         this.mapper = mapper;
+        this.bookingRest = bookingRest;
     }
 
     @Override
@@ -46,7 +53,13 @@ public class ClientServiceHandler implements ClientService {
     public Optional<ClientDomain> findClientById(Long id) {
         log.debug("method: findClientById({})", id);
         try {
-            return repository.findById(id).map(mapper::toDomain);
+            Optional<ClientEntity> optionalClient = repository.findById(id);
+            if (optionalClient.isEmpty()) {
+                return Optional.empty();
+            }
+            List<BookingModel> bookings = bookingRest.findBookingsByClient(id);
+            ClientDomain clientDomain = mapper.toDomain(optionalClient.get(), bookings);
+            return Optional.of(clientDomain);
         } catch (Exception ex) {
             log.error("method: findByActive({}) -> Exception: {}", id, ex);
             throw ex;

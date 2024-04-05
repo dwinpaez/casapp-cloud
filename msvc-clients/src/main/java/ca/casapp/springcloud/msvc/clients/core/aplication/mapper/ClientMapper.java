@@ -3,6 +3,7 @@ package ca.casapp.springcloud.msvc.clients.core.aplication.mapper;
 
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
 import ca.casapp.springcloud.msvc.clients.core.aplication.persistence.entity.ClientEntity;
+import ca.casapp.springcloud.msvc.clients.core.aplication.rest.model.BookingModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,17 @@ import java.util.stream.Collectors;
 @Component
 public class ClientMapper {
 
+    private final BookingMapper bookingMapper;
+
+    public ClientMapper(BookingMapper bookingMapper) {
+        this.bookingMapper = bookingMapper;
+    }
+
     public ClientDomain toDomain(ClientEntity entity) {
+        return toDomain(entity, Collections.emptyList());
+    }
+
+    public ClientDomain toDomain(ClientEntity entity, List<BookingModel> bookings) {
         if (Objects.isNull(entity))
             return null;
         return ClientDomain.builder()
@@ -30,6 +41,7 @@ public class ClientMapper {
                 .lastName(entity.getLastName())
                 .dateOfBirth(entity.getDateOfBirth())
                 .email(entity.getEmail())
+                .bookings(bookingMapper.toDomain(bookings))
                 .build();
     }
 

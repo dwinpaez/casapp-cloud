@@ -1,7 +1,7 @@
 package ca.casapp.springcloud.msvc.bookings.core.application.persistence.entity;
 
 
-import ca.casapp.springcloud.msvc.bookings.core.application.type.BookingState;
+import ca.casapp.springcloud.msvc.bookings.core.api.type.BookingState;
 import com.google.gson.Gson;
 import jakarta.persistence.*;
 import lombok.Data;

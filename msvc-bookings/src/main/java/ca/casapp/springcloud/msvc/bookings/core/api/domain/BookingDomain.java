@@ -1,6 +1,6 @@
 package ca.casapp.springcloud.msvc.bookings.core.api.domain;
 
-import ca.casapp.springcloud.msvc.bookings.core.application.type.BookingState;
+import ca.casapp.springcloud.msvc.bookings.core.api.type.BookingState;
 import com.google.gson.Gson;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;

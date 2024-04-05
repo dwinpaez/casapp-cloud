@@ -43,7 +43,7 @@ public class BookingController {
     }
 
     @GetMapping("/my-bookings/{clientId}")
-    public ResponseEntity<List<BookingDomain>> findBookinsByClient(@PathVariable("bookingId") Long clientId) {
+    public ResponseEntity<List<BookingDomain>> findBookinsByClient(@PathVariable("clientId") Long clientId) {
         log.debug("method: findBookinsByClient({})", clientId);
         return ResponseEntity.ok(bookingService.findBookingsByClient(clientId));
     }

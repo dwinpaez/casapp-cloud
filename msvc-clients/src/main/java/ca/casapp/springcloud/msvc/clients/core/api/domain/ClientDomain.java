@@ -9,6 +9,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author <a href="mailto:dwinpaez@gmail.com">Dwin Paez</a>
@@ -21,7 +22,9 @@ public record ClientDomain(
         String phone,
         String firstName,
         String lastName,
-        Date dateOfBirth) implements Serializable {
+        Date dateOfBirth,
+        List<BookingDomain> bookings
+) implements Serializable {
 
     @Override
     public String toString() {

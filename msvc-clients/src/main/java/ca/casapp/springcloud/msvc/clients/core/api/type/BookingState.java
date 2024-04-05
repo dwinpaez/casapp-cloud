@@ -1,4 +1,4 @@
-package ca.casapp.springcloud.msvc.bookings.core.application.type;
+package ca.casapp.springcloud.msvc.clients.core.api.type;
 
 public enum BookingState {
     CREATED,
