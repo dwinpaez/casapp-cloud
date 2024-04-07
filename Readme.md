@@ -9,7 +9,8 @@ sdk use java 17.0.10-jbr
 ./mvnw clean package -DskipTests
 
 # Create image
-sudo docker build . -t msvc-clients -f Dockerfile
+sudo docker build -t msvc-clients . -f Dockerfile
+sudo docker build -t msvc-clients . -f msvc-clients/Dockerfile
 
 # List images
 sudo docker images
