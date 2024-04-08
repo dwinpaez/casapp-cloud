@@ -11,12 +11,14 @@ sdk use java 17.0.10-jbr
 # Create image
 sudo docker build -t msvc-clients . -f Dockerfile
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
+sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
 
 # List images
 sudo docker images
 
 # Run image as container
-sudo docker run -d --rm --add-host=host.docker.internal:host-gateway -p 8081:8081 msvc-clients
+sudo docker run -d --rm --name msvc-clients --add-host=host.docker.internal:host-gateway -p 8081:8081 msvc-clients
+sudo docker run -d --rm --name msvc-bookings --add-host=host.docker.internal:host-gateway -p 8082:8082 msvc-bookings
 
 # Attach container
 sudo docker attach <id-container>

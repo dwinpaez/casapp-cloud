@@ -18,6 +18,7 @@ FROM openjdk:17-jdk-alpine
 WORKDIR /app
 RUN mkdir ./logs
 COPY --from=mvn-builder /app/msvc-clients/target/msvc-clients-0.0.1-SNAPSHOT.jar .
-EXPOSE 8081
+ENV PORT 8081
+EXPOSE $PORT
 
 CMD ["java", "-jar", "msvc-clients-0.0.1-SNAPSHOT.jar"]
