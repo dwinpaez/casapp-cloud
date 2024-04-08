@@ -17,8 +17,8 @@ sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
 sudo docker images
 
 # Run image as container
-sudo docker run -d --rm --name msvc-clients --add-host=host.docker.internal:host-gateway -p 8081:8081 msvc-clients
-sudo docker run -d --rm --name msvc-bookings --add-host=host.docker.internal:host-gateway -p 8082:8082 msvc-bookings
+sudo docker run -d --rm --name msvc-clients -p 8081:8081 --network casapp-net msvc-clients
+sudo docker run -d --rm --name msvc-bookings -p 8082:8082 --network casapp-net msvc-bookings
 
 # Attach container
 sudo docker attach <id-container>
@@ -41,3 +41,7 @@ sudo docker stop msvc-clients
 
 # Mode interactive
 sudo docker run --rm -it --add-host=host.docker.internal:host-gateway -p 8081:8081 msvc-clients /bin/sh
+
+# Docker network creation
+sudo docker network create casapp-net
+sudo docker network list
