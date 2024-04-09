@@ -13,12 +13,14 @@ sudo docker build -t msvc-clients . -f Dockerfile
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
 sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
 
+sudo docker build -t dwinpaez/msvc-clients:latest . -f msvc-clients/Dockerfile
+
 # List images
 sudo docker images
 
 # Run image as container
-sudo docker run -d --rm --name msvc-clients -p 8081:8081 --network casapp-net msvc-clients
-sudo docker run -d --rm --name msvc-bookings -p 8082:8082 --network casapp-net msvc-bookings
+sudo docker run -d --rm --name msvc-clients -p 8081:8081 --env-file msvc-clients/.env  --network casapp-net msvc-clients
+sudo docker run -d --rm --name msvc-bookings -p 8082:8082 --env-file msvc-bookings/.env --network casapp-net msvc-bookings
 
 # Attach container
 sudo docker attach <id-container>
@@ -45,3 +47,20 @@ sudo docker run --rm -it --add-host=host.docker.internal:host-gateway -p 8081:80
 # Docker network creation
 sudo docker network create casapp-net
 sudo docker network list
+
+# Docker tag
+sudo docker tag msvc-clients dwinpaez/msvc-clients
+sudo docker push dwinpaez/msvc-clients
+
+sudo docker tag msvc-bookings dwinpaez/msvc-bookings
+sudo docker push dwinpaez/msvc-bookings
+
+# Docker login
+sudo docker login -u dwinpaez
+
+# Minikube
+minikube start
+minikube dashboard
+minikube stop
+
+# kubectl

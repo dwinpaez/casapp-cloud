@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msvc-clients
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: msvc-clients
+  template:
+    metadata:
+      labels:
+        app: msvc-clients
+    spec:
+      containers:
+        - name: msvc-clients
+          image: dwinpaez/msvc-clients:latest
+          ports:
+            - containerPort: 8081
+          env:
+            - name: PORT
+              value: "8081"
+            - name: DB_DATABASE
+              value: casapp_clients
+            - name: DB_USERNAME
+              value: casapp_user
+            - name: DB_PASSWORD
+              value: casapp_pwd_2024
+            - name: BOOKINGS_SERVICE_URL
+              value: "msvc-bookings:8082/booking"
