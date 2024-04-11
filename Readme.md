@@ -13,8 +13,6 @@ sudo docker build -t msvc-clients . -f Dockerfile
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
 sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
 
-sudo docker build -t dwinpaez/msvc-clients:latest . -f msvc-clients/Dockerfile
-
 # List images
 sudo docker images
 

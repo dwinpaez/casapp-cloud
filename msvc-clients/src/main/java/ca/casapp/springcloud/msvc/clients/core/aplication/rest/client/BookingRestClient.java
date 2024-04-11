@@ -15,7 +15,7 @@ import java.util.List;
  */
 
 @Component
-@FeignClient(name = "msvc-bookings", url = "localhost:8080")
+@FeignClient(name = "msvc-bookings", url = "${msvc.bookings.service.url}")
 public interface BookingRestClient {
 
     @GetMapping("/my-bookings/{clientId}")

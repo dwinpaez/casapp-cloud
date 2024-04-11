@@ -20,12 +20,27 @@ spec:
             - containerPort: 8081
           env:
             - name: PORT
-              value: "8081"
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: msvc_port
             - name: DB_DATABASE
-              value: casapp_clients
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: db_name
             - name: DB_USERNAME
-              value: casapp_user
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: db_username
             - name: DB_PASSWORD
-              value: casapp_pwd_2024
+              valueFrom:
+                secretKeyRef:
+                  name: msvc-clients
+                  key: db_password
             - name: BOOKINGS_SERVICE_URL
-              value: "msvc-bookings:8082/booking"
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: msvc_bookings_url
