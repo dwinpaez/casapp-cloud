@@ -15,9 +15,9 @@ import java.util.List;
  */
 
 @Component
-@FeignClient(name = "msvc-bookings", url = "${msvc.bookings.service.url}")
+@FeignClient(name = "msvc-bookings")
 public interface BookingRestClient {
 
-    @GetMapping("/my-bookings/{clientId}")
+    @GetMapping("/booking/my-bookings/{clientId}")
     List<BookingModel> findBookingsByClient(@PathVariable Long clientId);
 }
