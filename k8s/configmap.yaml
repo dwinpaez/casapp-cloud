@@ -8,6 +8,46 @@ data:
   db_name: "casapp_clients"
   db_username: "casapp_user"
   msvc_bookings_url: "msvc-bookings:8002/booking"
+  application.yaml: |-
+    spring:
+      config:
+        activate:
+          on-profile: prod
+    logging:
+      level:
+        root: INFO
+        ca:
+          casapp: INFO
+        org:
+          springframework:
+            jdbc: INFO
+            web: INFO
+          hibernate: INFO
+      com:
+        zaxxer:
+          hikari:
+            HikariConfig: INFO
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: dev
+    logging:
+      level: 
+        root: INFO        
+        ca:
+          casapp: DEBUG
+        org:
+          springframework:
+            jdbc: DEBUG
+            web: DEBUG
+          hibernate: DEBUG
+      com:
+        zaxxer:
+          hikari:
+            HikariConfig: DEBUG
+          
+
 ---
 apiVersion: v1
 kind: ConfigMap
