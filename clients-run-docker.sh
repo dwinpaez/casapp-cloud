@@ -12,7 +12,7 @@ DEBUG=false
 echo "==> Environment Profile $ENV"
 
 DOCKER_ENV="\
-  --env PORT=8081 \
+  --env PORT=8082 \
   --env DB_DATABASE=casapp_clients \
   --env DB_USERNAME=casapp_user \
   --env DB_PASSWORD=casapp_pwd_2024 \

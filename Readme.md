@@ -70,3 +70,6 @@ kubectl delete -f msvc-clients/k8s/deployment.yaml
 
 kubectl rollout restart deploy msvc-clients --namespace=casapp
 kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceaccount=casapp:default
+
+# Run clients with sh
+sh clients-run-docker.sh {profile} example: sh clients-run-docker.sh dev

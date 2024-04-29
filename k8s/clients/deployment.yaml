@@ -19,6 +19,8 @@ spec:
           ports:
             - containerPort: 8081
           env:
+            - name: SPRING_PROFILE
+              value: dev
             - name: PORT
               valueFrom:
                 configMapKeyRef:

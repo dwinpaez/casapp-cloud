@@ -12,7 +12,7 @@ data:
     spring:
       config:
         activate:
-          on-profile: prod
+          on-profile: dev
     logging:
       level:
         root: INFO
@@ -27,11 +27,13 @@ data:
         zaxxer:
           hikari:
             HikariConfig: INFO
+      server:
+        port: 8081
     ---
     spring:
       config:
         activate:
-          on-profile: dev
+          on-profile: local
     logging:
       level: 
         root: INFO        
