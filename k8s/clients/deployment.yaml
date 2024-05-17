@@ -19,7 +19,7 @@ spec:
           ports:
             - containerPort: 8081
           env:
-            - name: SPRING_PROFILE
+            - name: SPRING_PROFILES_ACTIVE
               value: dev
             - name: PORT
               valueFrom:
@@ -46,3 +46,11 @@ spec:
                 configMapKeyRef:
                   name: msvc-clients
                   key: msvc_bookings_url
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP

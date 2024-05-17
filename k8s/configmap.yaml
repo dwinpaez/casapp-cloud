@@ -9,31 +9,40 @@ data:
   db_username: "casapp_user"
   msvc_bookings_url: "msvc-bookings:8002/booking"
   application.yaml: |-
+    client:
+      message: Default Clients
+    server:
+      port: 8081
+    ---  
     spring:
       config:
         activate:
           on-profile: dev
+    client:
+      message: Dev Clients
     logging:
+      file:
+        path: /app/logs
       level:
-        root: INFO
         ca:
           casapp: INFO
+        com:
+          zaxxer:
+            hikari:
+              HikariConfig: INFO
         org:
+          hibernate: INFO
           springframework:
             jdbc: INFO
             web: INFO
-          hibernate: INFO
-      com:
-        zaxxer:
-          hikari:
-            HikariConfig: INFO
-      server:
-        port: 8081
+        root: INFO
     ---
     spring:
       config:
         activate:
           on-profile: local
+    client:
+      message: Local Clients
     logging:
       level: 
         root: INFO        
@@ -44,11 +53,10 @@ data:
             jdbc: DEBUG
             web: DEBUG
           hibernate: DEBUG
-      com:
-        zaxxer:
-          hikari:
-            HikariConfig: DEBUG
-          
+        com:
+          zaxxer:
+            hikari:
+              HikariConfig: DEBUG
 
 ---
 apiVersion: v1

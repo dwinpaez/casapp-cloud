@@ -4,11 +4,14 @@ import ca.casapp.springcloud.msvc.clients.core.api.ClientService;
 import ca.casapp.springcloud.msvc.clients.core.api.domain.ClientDomain;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
+
+import static java.util.Map.entry;
 
 /**
  * Controller for {@link ClientDomain}.
@@ -23,15 +26,23 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private final Environment env;
 
-    public ClientController(ClientService clientService) {
+    public ClientController(ClientService clientService, Environment env) {
         this.clientService = clientService;
+        this.env = env;
     }
 
     @GetMapping
-    public ResponseEntity<List<ClientDomain>> findAllClients() {
+    public ResponseEntity<Map<String, Object>> findAllClients() {
         log.debug("method: findAllClients()");
-        return ResponseEntity.ok(clientService.findAllClients());
+        return ResponseEntity.ok(
+                Map.ofEntries(
+                        entry("clients", clientService.findAllClients()),
+                        entry("pod_name", env.getProperty("MY_POD_NAME")),
+                        entry("pod_ip", env.getProperty("MY_POD_IP")),
+                        entry("message", env.getProperty("client.message"))
+                ));
     }
 
     @GetMapping("/{clientId}")

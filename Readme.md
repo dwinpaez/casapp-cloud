@@ -73,3 +73,11 @@ kubectl create clusterrolebinding admin --clusterrole=cluster-admin --serviceacc
 
 # Run clients with sh
 sh clients-run-docker.sh {profile} example: sh clients-run-docker.sh dev
+
+
+# Build complete
+sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
+sudo docker tag msvc-clients dwinpaez/msvc-clients:latest
+sudo docker push dwinpaez/msvc-clients:latest
+kubectl apply -f k8s/configmap.yaml
+kubectl apply -f k8s/clients/deployment.yaml
