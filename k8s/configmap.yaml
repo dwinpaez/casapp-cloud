@@ -20,43 +20,13 @@ data:
           on-profile: dev
     client:
       message: Dev Clients
-    logging:
-      file:
-        path: /app/logs
-      level:
-        ca:
-          casapp: INFO
-        com:
-          zaxxer:
-            hikari:
-              HikariConfig: INFO
-        org:
-          hibernate: INFO
-          springframework:
-            jdbc: INFO
-            web: INFO
-        root: INFO
     ---
     spring:
       config:
         activate:
           on-profile: local
     client:
-      message: Local Clients
-    logging:
-      level: 
-        root: INFO        
-        ca:
-          casapp: DEBUG
-        org:
-          springframework:
-            jdbc: DEBUG
-            web: DEBUG
-          hibernate: DEBUG
-        com:
-          zaxxer:
-            hikari:
-              HikariConfig: DEBUG
+      message: Local Clients   
 
 ---
 apiVersion: v1

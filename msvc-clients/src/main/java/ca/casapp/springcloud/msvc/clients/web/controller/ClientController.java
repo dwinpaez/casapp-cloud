@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -41,7 +42,8 @@ public class ClientController {
                         entry("clients", clientService.findAllClients()),
                         entry("pod_name", env.getProperty("MY_POD_NAME")),
                         entry("pod_ip", env.getProperty("MY_POD_IP")),
-                        entry("message", env.getProperty("client.message"))
+                        entry("active-profiles", Arrays.toString(env.getActiveProfiles())),
+                        entry("default-profiles", Arrays.toString(env.getDefaultProfiles()))
                 ));
     }
 
