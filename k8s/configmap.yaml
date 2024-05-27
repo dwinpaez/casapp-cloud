@@ -11,6 +11,20 @@ data:
   msvc-clients.yml: |-
     client:
       message: Default Clients
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: dev
+    client:
+      message: Dev Clients
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: prod
+    client:
+      message: Prod Clients
 
 ---
 apiVersion: v1
