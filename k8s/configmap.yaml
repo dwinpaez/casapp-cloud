@@ -25,6 +25,22 @@ data:
           on-profile: prod
     client:
       message: Prod Clients
+    logging:
+      file:
+        path: /app/logs
+      level:
+        ca:
+          casapp: INFO
+        com:
+          zaxxer:
+            hikari:
+              HikariConfig: INFO
+        org:
+          hibernate: INFO
+          springframework:
+            jdbc: INFO
+            web: INFO
+        root: INFO
 
 ---
 apiVersion: v1

@@ -81,3 +81,6 @@ sudo docker tag msvc-clients dwinpaez/msvc-clients:latest
 sudo docker push dwinpaez/msvc-clients:latest
 kubectl apply -f k8s/configmap.yaml
 kubectl apply -f k8s/clients/deployment.yaml
+
+sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile && sudo docker tag msvc-clients dwinpaez/msvc-clients:latest && sudo docker push dwinpaez/msvc-clients:latest
+kubectl delete -f k8s/configmap.yaml && kubectl create -f k8s/configmap.yaml
