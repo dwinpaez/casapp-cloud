@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: msvc-clients
   namespace: casapp
+  labels:
+    app: msvc-clients
 spec:
   replicas: 1
   selector:
@@ -13,14 +15,15 @@ spec:
       labels:
         app: msvc-clients
     spec:
+      serviceAccountName: spring-cloud-kubernetes
       containers:
-        - name: msvc-clients
-          image: dwinpaez/msvc-clients:latest
+        - image: dwinpaez/msvc-clients:latest
+          name: msvc-clients
           ports:
             - containerPort: 8081
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: dev
+              value: "dev"
             - name: PORT
               valueFrom:
                 configMapKeyRef:

@@ -8,25 +8,9 @@ data:
   db_name: "casapp_clients"
   db_username: "casapp_user"
   msvc_bookings_url: "msvc-bookings:8002/booking"
-  application.yaml: |-
+  msvc-clients.yml: |-
     client:
       message: Default Clients
-    server:
-      port: 8081
-    ---  
-    spring:
-      config:
-        activate:
-          on-profile: dev
-    client:
-      message: Dev Clients
-    ---
-    spring:
-      config:
-        activate:
-          on-profile: local
-    client:
-      message: Local Clients   
 
 ---
 apiVersion: v1
@@ -38,3 +22,6 @@ data:
   msvc_port: "8082"
   db_name: "casapp_bookings"
   db_username: "casapp_user"
+  msvc-bookings.yml: |-
+    client:
+      message: Default Clients

@@ -60,8 +60,8 @@ sudo docker login -u dwinpaez
 minikube start
 minikube dashboard
 minikube stop
-minikube service msvc-clients --url --namespace=casapp
-minikube service msvc-bookings --url --namespace=casapp
+minikube service msvc-clients --url --namespace=casapp   # show URL
+minikube service msvc-bookings --url --namespace=casapp   # show URL
 
 # kubectl apply
 kubectl apply -f msvc-clients/k8s/deployment.yaml
