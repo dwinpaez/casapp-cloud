@@ -12,6 +12,7 @@ sdk use java 17.0.10-jbr
 sudo docker build -t msvc-clients . -f Dockerfile
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
 sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
+sudo docker build -t msvc-gateway:latest . -f msvc-gateway/Dockerfile
 
 # List images
 sudo docker images
@@ -81,6 +82,9 @@ sudo docker tag msvc-clients dwinpaez/msvc-clients:latest
 sudo docker push dwinpaez/msvc-clients:latest
 kubectl apply -f k8s/configmap.yaml
 kubectl apply -f k8s/clients/deployment.yaml
+
+sudo docker tag msvc-gateway dwinpaez/msvc-gateway:latest
+sudo docker push dwinpaez/msvc-gateway:latest
 
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile && sudo docker tag msvc-clients dwinpaez/msvc-clients:latest && sudo docker push dwinpaez/msvc-clients:latest
 kubectl delete -f k8s/configmap.yaml && kubectl create -f k8s/configmap.yaml

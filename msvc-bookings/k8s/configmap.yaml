@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: casapp
+  name: msvc-bookings
+data:
+  msvc_port: "8082"
+  db_name: "casapp_bookings"
+  db_username: "casapp_user"
+  msvc-bookings.yml: |-
+    client:
+      message: Default Clients

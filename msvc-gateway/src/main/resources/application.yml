@@ -1,0 +1,16 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: msvc-clients
+          uri: lb://msvc-clients
+          predicates:
+            - Path=/api/clients/**
+          filters:
+            - StripPrefix=2
+        - id: msvc-bookings
+          uri: lb://msvc-bookings
+          predicates:
+            - Path=/api/bookings/**
+          filters:
+            - StripPrefix=2
