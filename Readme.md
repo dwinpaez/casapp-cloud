@@ -80,11 +80,18 @@ sh clients-run-docker.sh {profile} example: sh clients-run-docker.sh dev
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
 sudo docker tag msvc-clients dwinpaez/msvc-clients:latest
 sudo docker push dwinpaez/msvc-clients:latest
-kubectl apply -f k8s/configmap.yaml
-kubectl apply -f k8s/clients/deployment.yaml
+kubectl apply -f msvc-clients/k8s/configmap.yaml
+kubectl apply -f msvc-clients/k8s/deployment.yaml
 
 sudo docker tag msvc-gateway dwinpaez/msvc-gateway:latest
 sudo docker push dwinpaez/msvc-gateway:latest
 
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile && sudo docker tag msvc-clients dwinpaez/msvc-clients:latest && sudo docker push dwinpaez/msvc-clients:latest
 kubectl delete -f k8s/configmap.yaml && kubectl create -f k8s/configmap.yaml
+
+# Build gateway
+sudo docker build -t msvc-gateway:latest . -f msvc-gateway/Dockerfile
+sudo docker tag msvc-gateway dwinpaez/msvc-gateway:latest
+sudo docker push dwinpaez/msvc-gateway:latest
+kubectl apply -f msvc-gateway/k8s/deployment.yaml
+minikube service msvc-gateway --url --namespace=casapp
