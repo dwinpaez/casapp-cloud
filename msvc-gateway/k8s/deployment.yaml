@@ -13,6 +13,7 @@ spec:
       labels:
         role: msvc-gateway
     spec:
+      serviceAccountName: spring-cloud-kubernetes
       containers:
         - name: msvc-gateway
           image: dwinpaez/msvc-gateway:latest

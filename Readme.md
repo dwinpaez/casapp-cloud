@@ -95,3 +95,13 @@ sudo docker tag msvc-gateway dwinpaez/msvc-gateway:latest
 sudo docker push dwinpaez/msvc-gateway:latest
 kubectl apply -f msvc-gateway/k8s/deployment.yaml
 minikube service msvc-gateway --url --namespace=casapp
+
+# AWS
+
+sudo apt install awscli
+aws configure
+    AWS Access Key ID [None]: AKI----
+    AWS Secret Access Key [None]: D1L---
+    Default region name [None]: us-east-1    
+    Default output format [None]: json
+
