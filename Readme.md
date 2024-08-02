@@ -105,3 +105,4 @@ aws configure
     Default region name [None]: us-east-1    
     Default output format [None]: json
 
+aws sts get-caller-identity

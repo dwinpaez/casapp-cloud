@@ -7,6 +7,13 @@
         "Service": "eks.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
+    },
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam::730335182446:user/dwinpaez"
+      },
+      "Action": "sts:AssumeRole"
     }
   ]
 }
