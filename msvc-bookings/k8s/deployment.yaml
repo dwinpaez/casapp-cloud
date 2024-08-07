@@ -13,6 +13,7 @@ spec:
       labels:
         app: msvc-bookings
     spec:
+      serviceAccountName: spring-cloud-kubernetes
       containers:
         - name: msvc-bookings
           image: dwinpaez/msvc-bookings:latest
