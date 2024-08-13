@@ -35,5 +35,8 @@ jobs:
       - name: Build Docker image for msvc-bookings
         run: sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
 
-      - name: Push Docker image for module1
+      - name: Tag Docker image for msvc-bookings
+        run: docker tag msvc-clients dwinpaez/msvc-clients:latest
+
+      - name: Push Docker image for msvc-bookings
         run: docker push dwinpaez/msvc-bookings:latest
