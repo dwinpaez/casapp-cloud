@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build msvc-bookings with Maven
+        run: mvn clean package -DskipTests -pl msvc-bookings -am
+
+      - name: Run Tests for msvc-bookings
+        run: mvn test -pl msvc-bookings -am
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      - name: Build Docker image for msvc-bookings
+        run: sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
+
+      - name: Push Docker image for module1
+        run: docker push dwinpaez/msvc-bookings:latest
