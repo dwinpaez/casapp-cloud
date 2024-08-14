@@ -30,7 +30,7 @@ jobs:
         run: mvn test -pl msvc-bookings -am
 
       - name: Run Tests and Generate Coverage Report for msvc-bookings
-        run: msvc-bookings/.mvnw test jacoco:report -pl msvc-bookings -am
+        run: mvn test jacoco:report -pl msvc-bookings -am
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v2
