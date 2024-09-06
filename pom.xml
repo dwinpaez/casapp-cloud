@@ -19,6 +19,7 @@
         <module>msvc-clients</module>
         <module>msvc-bookings</module>
         <module>msvc-gateway</module>
+        <module>msvc-auth</module>
     </modules>
 
     <properties>
