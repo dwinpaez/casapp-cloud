@@ -16,9 +16,7 @@ sudo docker build -t msvc-gateway:latest . -f msvc-gateway/Dockerfile
 
 # List images
 sudo docker images
-
-# Run image as container
-sudo docker run -d --rm --name msvc-clients -p 8081:8081 --env-file msvc-clients/.env  --network casapp-net msvc-clients
+minikube service msvc-clients --url --namespace=casappsvc-clients/.env  --network casapp-net msvc-clients
 sudo docker run -d --rm --name msvc-bookings -p 8082:8082 --env-file msvc-bookings/.env --network casapp-net msvc-bookings
 
 # Attach container
@@ -53,6 +51,9 @@ sudo docker push dwinpaez/msvc-clients
 
 sudo docker tag msvc-bookings dwinpaez/msvc-bookings
 sudo docker push dwinpaez/msvc-bookings
+
+sudo docker tag msvc-gateway dwinpaez/msvc-gateway
+sudo docker push dwinpaez/msvc-gateway
 
 # Docker login
 sudo docker login -u dwinpaez
@@ -106,3 +107,8 @@ aws configure
     Default output format [None]: json
 
 aws sts get-caller-identity
+
+# K9S
+k9s
+:service
+:pod

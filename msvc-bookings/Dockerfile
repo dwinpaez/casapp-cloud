@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk-alpine as mvn-builder
+FROM eclipse-temurin:21-jdk-alpine as mvn-builder
 
 WORKDIR /app/msvc-bookings
 
@@ -13,7 +13,7 @@ COPY ./msvc-bookings/src ./src
 
 RUN ./mvnw clean package -DskipTests
 
-FROM openjdk:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 RUN mkdir ./logs

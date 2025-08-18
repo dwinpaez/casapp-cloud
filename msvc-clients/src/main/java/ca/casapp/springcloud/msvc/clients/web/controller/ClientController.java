@@ -52,10 +52,7 @@ public class ClientController {
     public ResponseEntity<ClientDomain> findClientById(@PathVariable("clientId") Long clientId) {
         log.debug("method: findClientById({})", clientId);
         final var optional = clientService.findClientById(clientId);
-        if (optional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(optional.get());
+        return optional.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/")
