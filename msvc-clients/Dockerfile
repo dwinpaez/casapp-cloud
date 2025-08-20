@@ -21,6 +21,6 @@ COPY --from=mvn-builder /app/msvc-clients/target/msvc-clients-0.0.1-SNAPSHOT.jar
 ENV PORT 8081
 EXPOSE $PORT
 # environment variable with default value
-ENV SPRING_PROFILE=prod
+ENV SPRING_PROFILE=prod,k8s
 
 CMD ["java", "-Dspring.profiles.active=${SPRING_PROFILE}", "-jar", "msvc-clients-0.0.1-SNAPSHOT.jar"]

@@ -1,19 +1,19 @@
 logging:
   file:
     path: /app/logs
-    level:
-      ca:
-        casapp: DEBUG
-        com:
-          zaxxer:
-            hikari:
-              HikariConfig: DEBUG
-      org:
-        springframework:
-          jdbc: DEBUG
-          web: DEBUG
-        hibernate: DEBUG
-      root: INFO
+  level:
+    ca:
+      casapp: DEBUG
+      com:
+        zaxxer:
+          hikari:
+            HikariConfig: DEBUG
+    org:
+      springframework:
+        jdbc: DEBUG
+        web: DEBUG
+      hibernate: DEBUG
+    root: INFO
 msvc:
   bookings:
     service:
@@ -29,8 +29,6 @@ spring:
         all-namespaces: true
       secrets:
         enable-api: true
-  config:
-    import: 'kubernetes:'
   datasource:
     driverClassName: org.h2.Driver
     password: ${DB_PASSWORD:casapp_pwd_2024}
