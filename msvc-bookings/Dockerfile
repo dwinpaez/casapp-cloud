@@ -13,12 +13,13 @@ COPY ./msvc-bookings/src ./src
 
 RUN ./mvnw clean package -DskipTests
 
-FROM eclipse-temurin:21-jdk-alpine
+FROM eclipse-temurin:21-jre-alpine
 
 WORKDIR /app
 RUN mkdir ./logs
 COPY --from=mvn-builder /app/msvc-bookings/target/msvc-bookings-0.0.1-SNAPSHOT.jar .
 ENV PORT 8082
 EXPOSE $PORT
+ENV SPRING_PROFILE=prod
 
-CMD ["java", "-jar", "msvc-bookings-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-Dspring.profiles.active=${SPRING_PROFILE}", "-jar", "msvc-bookings-0.0.1-SNAPSHOT.jar"]

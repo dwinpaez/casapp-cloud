@@ -40,11 +40,11 @@ public class ClientController {
         return ResponseEntity.ok(
                 Map.ofEntries(
                         entry("clients", clientService.findAllClients()),
-                        entry("pod_name", env.getProperty("MY_POD_NAME")),
-                        entry("pod_ip", env.getProperty("MY_POD_IP")),
+                        entry("pod_name", env.getProperty("MY_POD_NAME", "unknown")),
+                        entry("pod_ip", env.getProperty("MY_POD_IP", "unknown")),
                         entry("active-profiles", Arrays.toString(env.getActiveProfiles())),
                         entry("default-profiles", Arrays.toString(env.getDefaultProfiles())),
-                        entry("message", env.getProperty("client.message"))
+                        entry("message", env.getProperty("client.message", "Hello from client"))
                 ));
     }
 

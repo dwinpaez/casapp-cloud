@@ -61,7 +61,7 @@ public class ClientServiceHandler implements ClientService {
             ClientDomain clientDomain = mapper.toDomain(optionalClient.get(), bookings);
             return Optional.of(clientDomain);
         } catch (Exception ex) {
-            log.error("method: findByActive({}) -> Exception: {}", id, ex);
+            log.error("method: findClientById({}) -> Exception: {}", id, ex);
             throw ex;
         }
     }

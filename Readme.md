@@ -84,6 +84,10 @@ sudo docker push dwinpaez/msvc-clients:latest
 kubectl apply -f msvc-clients/k8s/configmap.yaml
 kubectl apply -f msvc-clients/k8s/deployment.yaml
 
+sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
+sudo docker tag msvc-bookings dwinpaez/msvc-bookings:latest
+sudo docker push dwinpaez/msvc-bookings:latest
+
 sudo docker tag msvc-gateway dwinpaez/msvc-gateway:latest
 sudo docker push dwinpaez/msvc-gateway:latest
 

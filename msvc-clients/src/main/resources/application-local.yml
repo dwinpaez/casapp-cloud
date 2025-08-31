@@ -1,0 +1,4 @@
+feign:
+  client:
+    msvc-bookings:
+      url: http://localhost:8082
