@@ -45,6 +45,24 @@ spring:
       ddl-auto: none
   main:
     allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:8083
+      client:
+        registration:
+          msvc-oidc-client:
+            provider: spring
+            client-id: msvc-oidc-client
+            client-secret: casapp-secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8083/autorized"
+            scope: read,write
+            client-name: msvc-oidc-client
+        provider:
+          spring:
+            issuer-uri: http://127.0.0.1:8083
 
 management:
   endpoints:

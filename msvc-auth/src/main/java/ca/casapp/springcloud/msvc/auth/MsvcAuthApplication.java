@@ -1,4 +1,4 @@
-package ca.casapp.springcloud.msvc.auth.msvc_auth;
+package ca.casapp.springcloud.msvc.auth;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,4 +1,4 @@
-package ca.casapp.springcloud.msvc.auth.msvc_auth;
+package ca.casapp.springcloud.msvc.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
