@@ -116,3 +116,10 @@ aws sts get-caller-identity
 k9s
 :service
 :pod
+
+
+# Ports
+msvc-auth: 8083
+msvc-bookings: 8082
+msvc-clients: 8081
+msvc-gateway: 8090

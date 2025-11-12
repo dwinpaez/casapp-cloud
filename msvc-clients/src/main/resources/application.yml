@@ -49,7 +49,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://127.0.0.1:8083
+          issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:8083}
       client:
         registration:
           msvc-oidc-client:
@@ -57,12 +57,12 @@ spring:
             client-id: msvc-oidc-client
             client-secret: casapp-secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8083/autorized"
+            redirect-uri: "http://127.0.0.1:8081/autorized"
             scope: read,write
             client-name: msvc-oidc-client
         provider:
           spring:
-            issuer-uri: http://127.0.0.1:8083
+            issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:8083}
 
 management:
   endpoints:

@@ -15,7 +15,9 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/authorized").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("USER")
+                        .requestMatchers(HttpMethod.GET, "/", "/{clientId}").hasAnyAuthority("SCOPE_read", "SCOPE_write")
+                        .requestMatchers(HttpMethod.POST, "/").hasAnyAuthority("SCOPE_write")
+                        .requestMatchers(HttpMethod.DELETE, "/{clientId}").hasAnyAuthority("SCOPE_write")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -23,6 +25,8 @@ public class SecurityConfig {
                 .oauth2Login(oauth2Login -> oauth2Login
                         .loginPage("/oauth2/authorization/msvc-oidc-client"))
                 .oauth2Client(Customizer.withDefaults())
+                .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer
+                        .jwt(Customizer.withDefaults()))
                 .build();
     }
 }

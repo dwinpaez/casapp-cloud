@@ -10,6 +10,6 @@ service:
     id: "msvc-oidc-client"
     secret: "casapp-secret"
     redirect-uris:
-      - "http://127.0.0.1:8083/login/oauth2/code/msvc-oidc-client"
-      - "http://127.0.0.1:8083/authorized"
+      - "http://127.0.0.1:8081/login/oauth2/code/msvc-oidc-client"
+      - "http://127.0.0.1:8081/authorized"
     post-logout-redirect-uri: "http://127.0.0.1:8083/"

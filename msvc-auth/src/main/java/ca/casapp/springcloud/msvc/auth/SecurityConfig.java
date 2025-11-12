@@ -1,10 +1,18 @@
 package ca.casapp.springcloud.msvc.auth;
 
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
+import java.util.List;
+import java.util.UUID;
+
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,18 +42,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.util.List;
-import java.util.UUID;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // Inject values from application.yml for greater flexibility
     @Value("${service.client.id}")
     private String clientId;
 
@@ -104,10 +104,8 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        // For production, you should implement your own logic here to load users
-        // from a database (e.g., by injecting a UserRepository).
         UserDetails userDetails = User.builder()
-                .username("user")
+                .username("admin")
                 .password(passwordEncoder.encode("test123"))
                 .roles("USER")
                 .build();
@@ -123,29 +121,24 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
-        // For production, this should be replaced with `JdbcRegisteredClientRepository`
-        // to save clients in the database.
-        RegisteredClient.Builder builder = RegisteredClient.withId(UUID.randomUUID().toString())
+        RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId(clientId)
                 .clientSecret(passwordEncoder.encode(clientSecret))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+                .redirectUri(redirectUris.getFirst())
                 .postLogoutRedirectUri(postLogoutRedirectUri)
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
-                .scope("read") // Example of a custom scope
+                .scope("read")
                 .scope("write")
-                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build());
-
-        redirectUris.forEach(builder::redirectUri);
-        RegisteredClient oidcClient = builder.build();
+                .clientSettings(ClientSettings.builder().requireAuthorizationConsent(true).build())
+                .build();
 
         return new InMemoryRegisteredClientRepository(oidcClient);
     }
 
-    // Loads the signing key. For production, this should load a persistent Keystore file.
-    // This is crucial for tokens to remain valid after server restarts.
     @Bean
     public JWKSource<SecurityContext> jwkSource() {
         KeyPair keyPair = generateRsaKey();
@@ -159,8 +152,6 @@ public class SecurityConfig {
         return new ImmutableJWKSet<>(jwkSet);
     }
 
-    // This method still generates keys in memory, which is good for getting started,
-    // but for production, you should load a .jks file from the classpath.
     private static KeyPair generateRsaKey() {
         KeyPair keyPair;
         try {
@@ -178,11 +169,9 @@ public class SecurityConfig {
         return OAuth2AuthorizationServerConfiguration.jwtDecoder(jwkSource);
     }
 
-    // Configuration for the Authorization Server's issuer.
-    // It's important that this matches the URL from which the service is accessed.
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
-        return AuthorizationServerSettings.builder().issuer("http://auth-server:9000").build();
+        return AuthorizationServerSettings.builder().build();
     }
 
 }
