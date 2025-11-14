@@ -57,7 +57,7 @@ spring:
             client-id: msvc-oidc-client
             client-secret: casapp-secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8081/autorized"
+            redirect-uri: ${LB_CLIENTS_URI:http://127.0.0.1:8081}/authorized
             scope: read,write
             client-name: msvc-oidc-client
         provider:

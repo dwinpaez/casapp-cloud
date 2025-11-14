@@ -13,6 +13,7 @@ sudo docker build -t msvc-clients . -f Dockerfile
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile
 sudo docker build -t msvc-bookings:latest . -f msvc-bookings/Dockerfile
 sudo docker build -t msvc-gateway:latest . -f msvc-gateway/Dockerfile
+sudo docker build -t msvc-auth:latest . -f msvc-auth/Dockerfile
 
 # List images
 sudo docker images
@@ -66,7 +67,11 @@ minikube service msvc-clients --url --namespace=casapp   # show URL
 minikube service msvc-bookings --url --namespace=casapp   # show URL
 
 # kubectl apply
+kubectl apply -f msvc-clients/k8s/configmap.yaml
 kubectl apply -f msvc-clients/k8s/deployment.yaml
+
+kubectl apply -f msvc-auth/k8s/configmap.yaml
+kubectl apply -f msvc-auth/k8s/deployment.yaml
 # kubectl delete
 kubectl delete -f msvc-clients/k8s/deployment.yaml 
 
@@ -90,6 +95,10 @@ sudo docker push dwinpaez/msvc-bookings:latest
 
 sudo docker tag msvc-gateway dwinpaez/msvc-gateway:latest
 sudo docker push dwinpaez/msvc-gateway:latest
+
+sudo docker build -t msvc-auth:latest . -f msvc-auth/Dockerfile
+sudo docker tag msvc-auth dwinpaez/msvc-auth:latest
+sudo docker push dwinpaez/msvc-auth:latest
 
 sudo docker build -t msvc-clients:latest . -f msvc-clients/Dockerfile && sudo docker tag msvc-clients dwinpaez/msvc-clients:latest && sudo docker push dwinpaez/msvc-clients:latest
 kubectl delete -f k8s/configmap.yaml && kubectl create -f k8s/configmap.yaml

@@ -2,31 +2,26 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   namespace: casapp
-  name: msvc-clients
+  name: msvc-auth
 data:
-  msvc_port: "8081"
-  db_name: "casapp_clients"
-  db_username: "casapp_user"
-  lb_auth_issuer_uri: "http://127.0.0.1:8083"
-  lb_clients_uri: "http://127.0.0.1:8081"
-  msvc_bookings_url: "msvc-bookings:8002/booking"
-  msvc-clients.yml: |-
-    client:
-      message: Default Clients
+  msvc_port: "8083"
+  msvc-auth.yml: |-
+    auth:
+      message: Default Auth
     ---
     spring:
       config:
         activate:
           on-profile: dev
     client:
-      message: Dev Clients
+      message: Dev Auth
     ---
     spring:
       config:
         activate:
           on-profile: prod
     client:
-      message: Prod Clients
+      message: Prod Auth
     logging:
       file:
         path: /app/logs

@@ -24,6 +24,16 @@ spec:
           env:
             - name: SPRING_PROFILE
               value: "prod,k8s"
+            - name: LB_AUTH_ISSUER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: lb_auth_issuer_uri
+            - name: LB_CLIENTS_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: lb_clients_uri
             - name: PORT
               valueFrom:
                 configMapKeyRef:
