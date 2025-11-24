@@ -4,12 +4,11 @@ spring:
 server:
   port: 8083
 # Configuration for the registered OAuth2 client
-# In a real environment, these values would come from a secret management system.
+# In Kubernetes, these values come from ConfigMap (environment variables override these defaults)
+# These are fallback values for local development only
 service:
   client:
     id: "msvc-oidc-client"
     secret: "casapp-secret"
-    redirect-uris:
-      - "http://127.0.0.1:8081/login/oauth2/code/msvc-oidc-client"
-      - "http://127.0.0.1:8081/authorized"
+    base-uri: "http://127.0.0.1:8081"
     post-logout-redirect-uri: "http://127.0.0.1:8083/"

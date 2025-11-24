@@ -127,8 +127,86 @@ k9s
 :pod
 
 
-# Ports
-msvc-auth: 8083
-msvc-bookings: 8082
-msvc-clients: 8081
-msvc-gateway: 8090
+# Ports Configuration
+
+## Application Ports (targetPort - where Spring Boot listens inside container)
+- msvc-auth: 8083
+- msvc-bookings: 8082
+- msvc-clients: 8081
+- msvc-gateway: 8090
+
+## Kubernetes Service Ports (port - what other services use to communicate)
+- msvc-auth: 8003
+- msvc-bookings: 8002
+- msvc-clients: 8001
+
+## Port Mapping Explanation
+In Kubernetes Services:
+- `targetPort`: The port where your Spring Boot app listens inside the Pod (8081, 8082, 8083)
+- `port`: The port exposed by the Kubernetes Service for inter-service communication (8001, 8002, 8003)
+
+Example flow:
+```
+msvc-clients calls http://msvc-bookings:8002
+  → K8s Service (port 8002)
+  → Pod (targetPort 8082)
+  → Spring Boot listening on 8082
+```
+
+When calling between microservices inside Kubernetes, always use the Service port (8001, 8002, 8003)
+
+# Kubernetes Complete Deployment
+
+## Deploy to Minikube (Full Process)
+
+```bash
+# 1. Apply namespace
+kubectl apply -f k8s/namespace.yaml
+
+# 2. Apply global resources
+kubectl apply -f k8s/secret.yaml
+kubectl apply -f k8s/cluster-role.yaml
+
+# 3. Apply ConfigMaps
+kubectl apply -f msvc-auth/k8s/configmap.yaml
+kubectl apply -f msvc-clients/k8s/configmap.yaml
+kubectl apply -f msvc-bookings/k8s/configmap.yaml
+
+# 4. Apply Services (this creates the DNS entries for service discovery)
+kubectl apply -f msvc-auth/k8s/service.yaml
+kubectl apply -f msvc-clients/k8s/service.yaml
+kubectl apply -f msvc-bookings/k8s/service.yaml
+
+# 5. Apply Deployments
+kubectl apply -f msvc-auth/k8s/deployment.yaml
+kubectl apply -f msvc-clients/k8s/deployment.yaml
+kubectl apply -f msvc-bookings/k8s/deployment.yaml
+kubectl apply -f msvc-gateway/k8s/deployment.yaml
+
+# 6. Verify deployment
+kubectl get all -n casapp
+kubectl get pods -n casapp
+
+# 7. Access services externally via Minikube
+minikube service msvc-auth --url --namespace=casapp
+minikube service msvc-clients --url --namespace=casapp
+minikube service msvc-bookings --url --namespace=casapp
+```
+
+## Update and Redeploy a Service
+
+```bash
+# After making changes to code, rebuild and redeploy:
+sudo docker build -t msvc-auth:latest . -f msvc-auth/Dockerfile
+sudo docker tag msvc-auth dwinpaez/msvc-auth:latest
+sudo docker push dwinpaez/msvc-auth:latest
+
+# Update ConfigMap if needed
+kubectl apply -f msvc-auth/k8s/configmap.yaml
+
+# Restart deployment to pull new image
+kubectl rollout restart deploy msvc-auth --namespace=casapp
+
+# Check rollout status
+kubectl rollout status deploy msvc-auth --namespace=casapp
+```

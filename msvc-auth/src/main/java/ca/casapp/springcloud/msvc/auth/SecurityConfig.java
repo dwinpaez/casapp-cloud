@@ -4,7 +4,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.List;
 import java.util.UUID;
 
 import com.nimbusds.jose.jwk.JWKSet;
@@ -13,10 +12,12 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -52,8 +53,8 @@ public class SecurityConfig {
     @Value("${service.client.secret}")
     private String clientSecret;
 
-    @Value("${service.client.redirect-uris}")
-    private List<String> redirectUris;
+    @Value("${service.client.base-uri}")
+    private String clientsBaseUri;
 
     @Value("${service.client.post-logout-redirect-uri}")
     private String postLogoutRedirectUri;
@@ -121,13 +122,18 @@ public class SecurityConfig {
 
     @Bean
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
+        // Build redirect URIs dynamically from base URI and client ID
+        String redirectUri1 = clientsBaseUri + "/login/oauth2/code/" + clientId;
+        String redirectUri2 = clientsBaseUri + "/authorized";
+
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId(clientId)
                 .clientSecret(passwordEncoder.encode(clientSecret))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri(redirectUris.getFirst())
+                .redirectUri(redirectUri1)
+                .redirectUri(redirectUri2)
                 .postLogoutRedirectUri(postLogoutRedirectUri)
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)

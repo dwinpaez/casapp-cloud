@@ -7,9 +7,17 @@ data:
   msvc_port: "8081"
   db_name: "casapp_clients"
   db_username: "casapp_user"
-  lb_auth_issuer_uri: "http://127.0.0.1:8083"
-  lb_clients_uri: "http://127.0.0.1:8081"
-  msvc_bookings_url: "msvc-bookings:8002/booking"
+  # OAuth2 issuer URI - Get with: minikube service msvc-auth --url --namespace=casapp
+  lb_auth_issuer_uri: "http://192.168.39.80:30392"
+  # Clients base URI - Get with: minikube service msvc-clients --url --namespace=casapp
+  # Used by both client OAuth2 config and to build redirect URIs in auth code
+  lb_clients_uri: "http://192.168.39.80:30821"
+  oauth2_clients_base_uri: "http://192.168.39.80:30821"
+  # Internal service discovery - uses targetPort directly (no need to update)
+  msvc_bookings_url: "http://msvc-bookings:8082"
+  # OAuth2 Client Configuration (used by msvc-auth for client registration)
+  oauth2_client_id: "msvc-oidc-client"
+  oauth2_client_secret: "casapp-secret"
   msvc-clients.yml: |-
     client:
       message: Default Clients

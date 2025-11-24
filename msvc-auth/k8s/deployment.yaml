@@ -24,6 +24,31 @@ spec:
           env:
             - name: SPRING_PROFILE
               value: "prod,k8s"
+            - name: SERVICE_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: oauth2_client_id
+            - name: SERVICE_CLIENT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: oauth2_client_secret
+            - name: SERVICE_CLIENT_BASE_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: oauth2_clients_base_uri
+            - name: SERVICE_CLIENT_POST_LOGOUT_REDIRECT_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-auth
+                  key: oauth2_post_logout_redirect_uri
+            - name: LB_CLIENTS_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-clients
+                  key: lb_clients_uri
             - name: MY_POD_NAME
               valueFrom:
                 fieldRef:

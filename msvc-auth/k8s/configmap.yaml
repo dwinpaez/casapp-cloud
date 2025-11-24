@@ -5,6 +5,8 @@ metadata:
   name: msvc-auth
 data:
   msvc_port: "8083"
+  # OAuth2 post-logout redirect URI - Get with: minikube service msvc-auth --url --namespace=casapp
+  oauth2_post_logout_redirect_uri: "http://192.168.39.80:30392/"
   msvc-auth.yml: |-
     auth:
       message: Default Auth
