@@ -1,4 +1,88 @@
-# Change java version with SDKMAN
+# CasApp Cloud - Microservices Lab
+
+A microservices-based application laboratory built with Spring Boot and Kubernetes, designed for learning and experimenting with cloud-native architecture patterns.
+
+## Overview
+
+CasApp Cloud is a distributed system that demonstrates modern microservices architecture, featuring OAuth2 authentication, service discovery, and container orchestration with Kubernetes. This project serves as a hands-on learning environment for cloud-native development.
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                      Minikube Cluster                           │
+│                                                                 │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐    │
+│  │  msvc-auth   │    │ msvc-clients │    │msvc-bookings │    │
+│  │   (8083)     │◄───┤   (8081)     │◄───┤   (8082)     │    │
+│  │              │    │              │    │              │    │
+│  │ OAuth2 Server│    │ Client Mgmt  │    │Booking Mgmt  │    │
+│  └──────────────┘    └──────────────┘    └──────────────┘    │
+│         ▲                    ▲                    ▲            │
+│         │                    │                    │            │
+│         └────────────────────┴────────────────────┘            │
+│                              │                                 │
+│                    ┌─────────▼──────────┐                      │
+│                    │   msvc-gateway     │                      │
+│                    │     (8090)         │                      │
+│                    │   API Gateway      │                      │
+│                    └────────────────────┘                      │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+## Microservices
+
+| Service | Port | Description | Technology |
+|---------|------|-------------|------------|
+| **msvc-auth** | 8083 | OAuth2 Authorization Server | Spring Security OAuth2 |
+| **msvc-clients** | 8081 | Client management & OAuth2 Resource Server | Spring Boot, H2 Database |
+| **msvc-bookings** | 8082 | Booking management system | Spring Boot, H2 Database |
+| **msvc-gateway** | 8090 | API Gateway & routing | Spring Cloud Gateway |
+
+## Key Features
+
+- **OAuth2/OIDC Authentication**: Centralized authentication with authorization code flow
+- **Service Discovery**: Spring Cloud Kubernetes for automatic service registration
+- **Dynamic Configuration**: ConfigMaps for environment-specific settings
+- **Container Orchestration**: Kubernetes deployments with health checks
+- **API Gateway**: Single entry point with routing and load balancing
+- **H2 In-Memory Databases**: Lightweight persistence for development
+
+## Technology Stack
+
+- **Framework**: Spring Boot 3.5.4 / Spring Cloud
+- **Language**: Java 21
+- **Build Tool**: Maven
+- **Authentication**: Spring Security OAuth2 Authorization Server
+- **Containerization**: Docker
+- **Orchestration**: Kubernetes (Minikube for local development)
+- **Service Discovery**: Spring Cloud Kubernetes
+- **Database**: H2 (in-memory)
+
+## Quick Start
+
+```bash
+# Start Minikube
+minikube start
+
+# Deploy all services
+kubectl apply -f k8s/namespace.yaml
+kubectl apply -f k8s/
+kubectl apply -f msvc-auth/k8s/
+kubectl apply -f msvc-clients/k8s/
+kubectl apply -f msvc-bookings/k8s/
+kubectl apply -f msvc-gateway/k8s/
+
+# Get service URLs
+minikube service msvc-gateway --url --namespace=casapp
+```
+
+---
+
+# Development Guide
+
+## Change java version with SDKMAN
 sdk list java
 sdk install java 11.0.14.1-jbr
 sdk use java 11.0.14.1-jbr
