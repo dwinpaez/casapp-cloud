@@ -124,7 +124,7 @@ public class SecurityConfig {
     public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder) {
         // Build redirect URIs dynamically from base URI and client ID
         String redirectUri1 = clientsBaseUri + "/login/oauth2/code/" + clientId;
-        String redirectUri2 = clientsBaseUri + "/authorized";
+        String redirectUri2 = clientsBaseUri + "/client/authorized";
 
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId(clientId)

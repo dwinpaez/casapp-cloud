@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -72,10 +71,5 @@ public class ClientController {
         }
         clientService.deleteClient(optional.get().id());
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/authorized")
-    public Map<String, Object> authorized(@RequestParam(name = "code") String code) {
-        return Collections.singletonMap("code", code);
     }
 }

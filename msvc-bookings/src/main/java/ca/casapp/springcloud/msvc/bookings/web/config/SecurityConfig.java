@@ -1,4 +1,4 @@
-package ca.casapp.springcloud.msvc.clients.web.config;
+package ca.casapp.springcloud.msvc.bookings.web.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +18,10 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/actuator/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/client", "/client/{clientId}").hasAnyAuthority("SCOPE_read", "SCOPE_write")
-                        .requestMatchers(HttpMethod.POST, "/client/").hasAnyAuthority("SCOPE_write")
-                        .requestMatchers(HttpMethod.DELETE, "/client/{clientId}").hasAnyAuthority("SCOPE_write")
+                        .requestMatchers(HttpMethod.GET, "/booking", "/booking/{bookingId}").hasAnyAuthority("SCOPE_read", "SCOPE_write")
+                        .requestMatchers(HttpMethod.POST, "/booking").hasAnyAuthority("SCOPE_write")
+                        .requestMatchers(HttpMethod.PUT, "/booking/{bookingId}").hasAnyAuthority("SCOPE_write")
+                        .requestMatchers(HttpMethod.DELETE, "/booking/{bookingId}").hasAnyAuthority("SCOPE_write")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

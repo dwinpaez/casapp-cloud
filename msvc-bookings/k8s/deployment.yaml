@@ -20,6 +20,13 @@ spec:
           ports:
             - containerPort: 8082
           env:
+            - name: SPRING_PROFILE
+              value: "prod,k8s"
+            - name: LB_AUTH_ISSUER_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: msvc-bookings
+                  key: lb_auth_issuer_uri
             - name: PORT
               valueFrom:
                 configMapKeyRef:
@@ -40,3 +47,27 @@ spec:
                 secretKeyRef:
                   name: msvc-bookings
                   key: db_password
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8082
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 20
+            timeoutSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8082
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10

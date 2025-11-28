@@ -39,6 +39,29 @@ spring:
     defer-datasource-initialization: true
     hibernate:
       ddl-auto: none
+  main:
+    allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${LB_AUTH_ISSUER_URI:http://127.0.0.1:8083}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    endpoint:
+      health:
+        show-details: always
+        probes:
+          enabled: true
+    health:
+      livenessstate:
+        enabled: true
+      readinessstate:
+        enabled: true
 ---
 spring:
   config:

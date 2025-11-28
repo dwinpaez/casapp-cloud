@@ -294,3 +294,181 @@ kubectl rollout restart deploy msvc-auth --namespace=casapp
 # Check rollout status
 kubectl rollout status deploy msvc-auth --namespace=casapp
 ```
+
+## Testing OAuth2 Authentication Flow
+
+### Architecture Overview
+
+```
+┌─────────────┐         ┌──────────────┐         ┌──────────────┐
+│   Client    │────1───▶│  msvc-auth   │         │ msvc-clients │
+│  (Browser)  │◀───2────│  (OAuth2     │         │ (Resource    │
+│             │         │   Server)    │         │  Server)     │
+│             │────3───▶│              │         │              │
+│             │◀───4────│              │         │              │
+│             │         └──────────────┘         └──────────────┘
+│             │                                          ▲
+│             │──────────5 (with JWT token)─────────────┘
+└─────────────┘
+```
+
+1. User accesses protected resource
+2. Redirected to login (msvc-auth)
+3. User submits credentials
+4. Receives JWT token
+5. Uses token to access resources
+
+### Credentials
+
+- **Username**: `admin`
+- **Password**: `test123`
+
+(Configured in `msvc-auth/SecurityConfig.java:108-112`)
+
+### Step-by-Step Testing
+
+#### Method 1: Using cURL (Recommended for API testing)
+
+**Step 1: Get Authorization Code**
+
+Open in browser:
+```
+http://<MSVC_AUTH_URL>/oauth2/authorize?response_type=code&client_id=msvc-oidc-client&scope=read%20write&redirect_uri=http://<MSVC_CLIENTS_URL>/login/oauth2/code/msvc-oidc-client
+```
+
+Replace `<MSVC_AUTH_URL>` and `<MSVC_CLIENTS_URL>` with your actual URLs from:
+```bash
+minikube service msvc-auth --url --namespace=casapp
+minikube service msvc-clients --url --namespace=casapp
+```
+
+Login with `admin/test123`, approve scopes, then copy the `code` from the redirect URL.
+
+**Step 2: Exchange code for token**
+
+```bash
+curl -X POST http://<MSVC_AUTH_URL>/oauth2/token \
+  -u msvc-oidc-client:casapp-secret \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=authorization_code&code=<CODE>&redirect_uri=http://<MSVC_CLIENTS_URL>/login/oauth2/code/msvc-oidc-client"
+```
+
+Response:
+```json
+{
+  "access_token": "eyJraWQiOiI...",
+  "refresh_token": "...",
+  "scope": "read write",
+  "token_type": "Bearer",
+  "expires_in": 299
+}
+```
+
+**Step 3: Access protected resource**
+
+```bash
+# Should return 401 Unauthorized
+curl http://<MSVC_CLIENTS_URL>/client
+
+# Should return 200 OK with clients data
+curl -H "Authorization: Bearer <ACCESS_TOKEN>" http://<MSVC_CLIENTS_URL>/client
+```
+
+#### Method 2: Testing with Postman (Recommended - Saves Configuration)
+
+**Step 1: Create a New Request**
+
+1. Click **"New" → "HTTP Request"**
+2. Name: `Get Clients with OAuth2`
+3. URL: `http://<MSVC_CLIENTS_URL>/client`
+4. Method: `GET`
+
+**Step 2: Configure Authorization**
+
+In the **"Authorization"** tab:
+
+| Field | Value |
+|-------|-------|
+| **Type** | `OAuth 2.0` |
+| **Add auth data to** | `Request Headers` |
+
+**Step 3: Configure New Token**
+
+Click **"Configure New Token"** and fill in:
+
+| Field | Value |
+|-------|-------|
+| **Token Name** | `CasApp Token` |
+| **Grant Type** | `Authorization Code` |
+| **Callback URL** | `http://<MSVC_CLIENTS_URL>/login/oauth2/code/msvc-oidc-client` |
+| **Auth URL** | `http://<MSVC_AUTH_URL>/oauth2/authorize` |
+| **Access Token URL** | `http://<MSVC_AUTH_URL>/oauth2/token` |
+| **Client ID** | `msvc-oidc-client` |
+| **Client Secret** | `casapp-secret` |
+| **Scope** | `read write` |
+| **Client Authentication** | `Send as Basic Auth header` |
+
+**Step 4: Get Token**
+
+1. Click **"Get New Access Token"**
+2. Browser opens → Login with `admin/test123`
+3. Approve scopes (read, write)
+4. Postman receives token automatically
+5. Click **"Use Token"**
+
+**Step 5: Send Request**
+
+1. Click **"Send"**
+2. Should receive 200 OK with clients data
+
+**Step 6: Save to Collection (Optional)**
+
+1. Right-click request → **"Add to Collection"**
+2. Create collection: `CasApp Microservices`
+3. OAuth2 config is saved with the request
+
+**Pro Tip:** Configure OAuth2 at **Collection level** for all requests:
+- Right-click Collection → **Edit** → **Authorization** tab
+- Configure OAuth2 once
+- In each request: Select **"Inherit auth from parent"**
+
+#### Method 3: Quick Verification (Without Token)
+
+Test that security is working:
+
+```bash
+# Get service URLs
+MSVC_CLIENTS_URL=$(minikube service msvc-clients --url --namespace=casapp)
+
+# Should return 401 Unauthorized (HTML login page is wrong!)
+curl -i $MSVC_CLIENTS_URL/client
+```
+
+**Expected behavior:**
+- Response code: `401 Unauthorized`
+- Content-Type: `application/json` (NOT `text/html`)
+- Body: JSON error, NOT HTML login page
+
+### Troubleshooting
+
+**Problem**: Getting HTML login page with 200 status instead of 401
+
+**Solution**: Make sure `msvc-clients/SecurityConfig.java` only has `oauth2ResourceServer`, not `oauth2Login`
+
+**Problem**: Token validation fails
+
+**Solution**: Verify `issuer-uri` in both services point to the same auth server:
+```bash
+kubectl get configmap msvc-clients -n casapp -o yaml | grep issuer
+```
+
+### Getting Service URLs
+
+```bash
+# Get all service URLs
+minikube service msvc-auth --url --namespace=casapp
+minikube service msvc-clients --url --namespace=casapp
+minikube service msvc-bookings --url --namespace=casapp
+```
+
+These URLs change when Minikube restarts, so always verify before testing.

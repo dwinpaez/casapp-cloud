@@ -7,6 +7,8 @@ data:
   msvc_port: "8082"
   db_name: "casapp_bookings"
   db_username: "casapp_user"
+  # OAuth2 issuer URI - Get with: minikube service msvc-auth --url --namespace=casapp
+  lb_auth_issuer_uri: "http://192.168.39.80:30392"
   msvc-bookings.yml: |-
     client:
-      message: Default Clients
+      message: Default Bookings
